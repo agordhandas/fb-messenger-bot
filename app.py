@@ -41,11 +41,11 @@ def webook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     message_time = messaging_event['timestamp'] #timestamp
                     send_message(sender_id, "Got it!")
-                    """user[sender_id] = {'name':'',
+                    user[sender_id] = {'name':'',
                                        'email': '',
                                        'phone_number': '',
                                        'squash_level': '',
-                                       'availability_today':[]}"""
+                                       'availability_today':[]}
                     send_message(sender_id, "Got it!")
                     if message_text == 'Hi':
                         send_message(sender_id, "What's your name?")
