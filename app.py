@@ -46,7 +46,7 @@ def webook():
                                        'phone_number': '',
                                        'squash_level': '',
                                        'availability_today':[]}
-
+                    send_message(sender_id, "Got it!")
                     if message_text == 'Hi':
                         send_message(sender_id, "What's your name?")
                         if messaging_event.get("message"):
