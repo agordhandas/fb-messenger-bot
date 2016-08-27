@@ -22,6 +22,7 @@ def verify():
 
 @app.route('/', methods=['POST'])
 def webook():
+    user = {}
 
     # endpoint for processing incoming messaging events
 
@@ -38,8 +39,43 @@ def webook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
+                    message_time = messaging_event['timestamp'] #timestamp
+                    send_message(sender_id, "Got it!")
+                    user[sender_id] = {'name':'',
+                                       'email': '',
+                                       'phone_number': '',
+                                       'squash_level': '',
+                                       'availability_today':[]}
 
-                    send_message(sender_id, "got it, thanks!")
+                    if message_text == 'Hi':
+                        send_message(sender_id, "What's your name?")
+                        if messaging_event.get("message"):
+                            message_text = messaging_event["message"]["text"]
+                            user[sender_id]['name'] = message_text
+                            send_message(sender_id, "Thanks {0}! What's your hbs email address?")
+                            if messaging_event.get("message"):
+                                message_text = messaging_event["message"]["text"]
+                                if 'mba2017.hbs.edu' in message_text:
+                                    user[sender_id]['email'] = message_text
+                                    send_message(sender_id, "What's your phone number? (10-digit, numbers only)")
+                                    if messaging_event.get("message"):
+                                        message_text = messaging_event["message"]["text"]
+                                        user[sender_id]['phone_number'] = message_text
+                                        send_message(sender_id, "What's your level? (High/Medium/Low)")
+                                        if messaging_event.get("message"):
+                                            message_text = messaging_event["message"]["text"]
+                                            user[sender_id]['level'] = message_text
+                                            send_message(sender_id, "What's your availability today? [hh:mm-hh:mm (24-hour format)]")
+                                            if messaging_event.get("message"):
+                                                message_text = messaging_event["message"]["text"]
+                                                user[sender_id]['availability_today'] = message_text
+
+
+                                else:
+                                    send_message(sender_id, "Sorry! Only for HBS 2017! Check again later.")
+
+
+
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
